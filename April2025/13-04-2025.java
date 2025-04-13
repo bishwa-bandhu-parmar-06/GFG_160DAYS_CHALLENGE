@@ -1,29 +1,36 @@
-// 1922. Count Good Numbers
 
-class Solution {
-    static final int MOD = 1000000007;
 
-    public int countGoodNumbers(long chakraLength) {
-        long evenPositions = (chakraLength + 1) / 2; // like left side of scroll
-        long oddPositions = chakraLength / 2;        // right side of scroll
-        long evenWays = fastPower(5, evenPositions); // 5 even digits
-        long oddWays = fastPower(4, oddPositions);   // 4 prime digits
+// Clone an Undirected Graph
+// Difficulty: MediumAccuracy: 67.49%Submissions: 34K+Points: 4
+// Given a connected undirected graph represented by adjacency list, adjList[][] with n nodes, having a distinct label from 0 to n-1, where each adj[i] represents the list of vertices connected to vertex i.
 
-        return (int)((evenWays * oddWays) % MOD);
+// Create a clone of the graph, where each node in the graph contains an integer val and an array (neighbors) of nodes, containing nodes that are adjacent to the current node.
+
+// class Node {
+//     val: integer
+//     neighbors: List[Node]
+// }
+// Your task is to complete the function cloneGraph( ) which takes a starting node of the graph as input and returns the copy of the given node as a reference to the cloned graph.
+
+// Note: If you return a correct copy of the given graph, then the driver code will print true; and if an incorrect copy is generated or when you return the original node, the driver code will print false.
+
+
+class Node {
+    public int val;
+    public List<Node> neighbors;
+
+    public Node() {
+        val = 0;
+        neighbors = new ArrayList<Node>();
     }
 
-    // Chakra Power Boost: Fast Exponentiation
-    long fastPower(long base, long power) {
-        long result = 1;
-        base %= MOD;
+    public Node(int _val) {
+        val = _val;
+        neighbors = new ArrayList<Node>();
+    }
 
-        while (power > 0) {
-            if (power % 2 == 1) {
-                result = (result * base) % MOD; // apply current jutsu
-            }
-            base = (base * base) % MOD; // double chakra burst
-            power /= 2; // halve the turns
-        }
-        return result;
+    public Node(int _val, ArrayList<Node> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
     }
 }
