@@ -4,48 +4,65 @@
 // Your task is to find the minimum weight cycle in this graph.
 
 class Solution {
-    static final int INF = 1000000000;
-
     public int findMinCycle(int V, int[][] edges) {
-        int[][] dist = new int[V][V];
+        final int INF = (int)1e9;
 
-        // Initialize distance matrix
-        for (int i = 0; i < V; i++) {
-            for (int j = 0; j < V; j++) {
-                if (i == j) dist[i][j] = 0;
-                else dist[i][j] = INF;
-            }
-        }
+        // Adjacency list: each node stores a list of (neighbor, weight)
+        List<List<int[]>> adj = new ArrayList<>();
+        for (int i = 0; i < V; i++) adj.add(new ArrayList<>());
 
-        // Fill initial distances from edges
         for (int[] edge : edges) {
             int u = edge[0], v = edge[1], w = edge[2];
-            dist[u][v] = Math.min(dist[u][v], w); // in case of multiple edges
-            dist[v][u] = Math.min(dist[v][u], w);
-        }
-
-        // Floyd-Warshall Algorithm
-        for (int k = 0; k < V; k++) {
-            for (int i = 0; i < V; i++) {
-                for (int j = 0; j < V; j++) {
-                    if (dist[i][k] < INF && dist[k][j] < INF)
-                        dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
-                }
-            }
+            adj.get(u).add(new int[]{v, w});
+            adj.get(v).add(new int[]{u, w});
         }
 
         int minCycle = INF;
 
-        // Try removing each edge and finding the shortest path between its nodes
         for (int[] edge : edges) {
             int u = edge[0], v = edge[1], w = edge[2];
 
-            // Check for cycle: path from u to v + direct edge
-            if (dist[u][v] < INF) {
-                minCycle = Math.min(minCycle, dist[u][v] + w);
+            // Temporarily remove the edge (u, v)
+            removeEdge(adj, u, v);
+            removeEdge(adj, v, u);
+
+            // Dijkstra from u to v
+            int[] dist = new int[V];
+            Arrays.fill(dist, INF);
+            dist[u] = 0;
+
+            PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+            pq.offer(new int[]{0, u});
+
+            while (!pq.isEmpty()) {
+                int[] curr = pq.poll();
+                int d = curr[0], node = curr[1];
+
+                if (d > dist[node]) continue;
+
+                for (int[] nei : adj.get(node)) {
+                    int neighbor = nei[0], wt = nei[1];
+                    if (dist[node] + wt < dist[neighbor]) {
+                        dist[neighbor] = dist[node] + wt;
+                        pq.offer(new int[]{dist[neighbor], neighbor});
+                    }
+                }
             }
+
+            // If path from u to v exists, a cycle exists
+            if (dist[v] != INF) {
+                minCycle = Math.min(minCycle, dist[v] + w);
+            }
+
+            // Restore the edge
+            adj.get(u).add(new int[]{v, w});
+            adj.get(v).add(new int[]{u, w});
         }
 
         return minCycle == INF ? -1 : minCycle;
+    }
+
+    private void removeEdge(List<List<int[]>> adj, int from, int to) {
+        adj.get(from).removeIf(edge -> edge[0] == to);
     }
 }
