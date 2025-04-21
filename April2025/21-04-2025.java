@@ -5,13 +5,13 @@
 class Solution {
     int missingNum(int arr[]) {
         int n = arr.length + 1;  // Since one number is missing
-        int total = n * (n + 1) / 2;
 
-        int sum = 0;
+        long total = (long) n * (n + 1) / 2;  // Use long to avoid overflow
+        long sum = 0;
         for (int num : arr) {
             sum += num;
         }
 
-        return total - sum;
+        return (int)(total - sum);  // Cast back to int for the result
     }
 }
