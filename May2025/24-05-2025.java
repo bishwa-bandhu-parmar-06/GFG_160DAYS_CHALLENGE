@@ -8,16 +8,16 @@
 
 class Solution {
     public static int sumSubstrings(String s) {
-        int n = s.length();
-        long sum = 0;
-        long prev = 0;
-        int mod = 1000000007;
-
-        for (int i = 0; i < n; i++) {
-            int num = s.charAt(i) - '0';
-            prev = (prev * 10 + (long)(num) * (i + 1)) % mod;
-            sum = (sum + prev) % mod;
+        // code here
+        int sum = 0;
+        
+        for(int i=0;i<s.length();i++){
+            for(int j=i;j<s.length();j++){
+                String num = s.substring(i,j+1);
+                sum = sum + Integer.parseInt(num);
+            }
         }
-        return (int) sum;
+        
+        return sum;
     }
 }
