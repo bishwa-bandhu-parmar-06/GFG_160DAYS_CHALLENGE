@@ -4,28 +4,41 @@
 
 
 class Solution {
-    public ArrayList<Integer> farMin(int[] arr) {
-        // Code Here
-          int n = arr.length;
-        ArrayList<Integer> ans = new ArrayList<>(Collections.nCopies(n, -1));
-
-        // store value and index
-        ArrayList<int[]> v = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            v.add(new int[]{arr[i], i});
-        }
-
-        // sort by value
-        v.sort((a, b) -> Integer.compare(a[0], b[0]));
-
-        int maxi = v.get(0)[1];
-        for (int i = 1; i < n; i++) {
-            if (maxi > v.get(i)[1]) {
-                ans.set(v.get(i)[1], maxi);
+    public static int binS(int[] arr,int[]max, int val,int s){
+        int e=arr.length-1;
+        int ans=-1;
+        while(s<=e){
+            int m=(s+e)/2;
+            
+            if(arr[max[m]]<val){
+                ans=m;
+                s=m+1;
             }
-            maxi = Math.max(maxi, v.get(i)[1]);
+            else{
+                e=m-1;
+            }
         }
-
         return ans;
+        
     }
-} 
+    public ArrayList<Integer> farMin(int[] arr) {
+        int n=arr.length;
+        int [] max=new int[n];
+        max[n-1]=n-1;
+        for(int i=n-2;i>=0;i--){
+            if(arr[i]<arr[max[i+1]]){
+                max[i]=i;
+            }
+            else{
+                max[i]=max[i+1];
+            }
+        }
+        ArrayList<Integer>ans= new ArrayList<>();
+        //int ans[]= new arr[n];
+        for(int i=0;i<n;i++){
+            ans.add(binS(arr,max,arr[i],i));
+        }
+        return ans;
+        
+    }
+}
