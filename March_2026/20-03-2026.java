@@ -1,3 +1,12 @@
+// Predecessor and Successor
+// Difficulty: MediumAccuracy: 47.36%Submissions: 189K+Points: 4
+// You are given the root of a BST and an integer key. You need to find the inorder predecessor and successor of the given key. If either predecessor or successor is not found, then set it to NULL.
+
+// Note: In an inorder traversal the number just smaller than the target is the predecessor and the number just greater than the target is the successor. 
+
+
+
+
 class Solution {
     public ArrayList<Node> findPreSuc(Node root, int k) {
         
