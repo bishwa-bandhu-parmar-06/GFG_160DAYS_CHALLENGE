@@ -1,0 +1,40 @@
+// Check if All Bits Set
+// Difficulty: BasicAccuracy: 52.59%Submissions: 42K+Points: 1
+// Given a number n, check whether every bit in the binary representation of the given number is set or not.
+
+// Return true if yes, otherwise false.
+
+// Examples :
+
+// Input: n = 7
+// Output: true
+// Explanation: Binary for 7 is 111 all the bits are set so the output is true.
+// Input: n = 8
+// Output: false
+// Explanation: Binary for 8 is 1000 all the bits are not set so the output is false.
+// Input: n = 0
+// Output: false
+// Explanation: All the bits are 0 so the output is false.
+// Constraints:
+// 0 ≤ n ≤ 105
+
+
+
+class Solution {
+    public boolean isBitSet(int n) {
+        // Edge Case
+        if(n == 0) {
+            return false;
+        }
+        
+        while(n > 0) {
+            if( (n&1) == 0) {
+                return false;
+            }
+            
+            n >>= 1;
+        }
+        
+        return true;
+    }
+};
